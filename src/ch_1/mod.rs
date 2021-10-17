@@ -18,13 +18,21 @@ pub fn nand(a: Bit, b: Bit) -> Bit {
 }
 
 fn bit2bool(bit: Bit) -> bool {
-    if bit == 1 { return true }
-    if bit == 0 { return false }
+    if bit == 1 {
+        return true;
+    }
+    if bit == 0 {
+        return false;
+    }
     panic!("bit must be `0` or `1`")
 }
 
 fn bool2bit(bit: bool) -> Bit {
-    if bit { 1 } else { 0 }
+    if bit {
+        1
+    } else {
+        0
+    }
 }
 
 #[cfg(test)]
@@ -54,10 +62,7 @@ mod tests {
         assert_eq!(bit2bool(input), output);
     }
 
-    #[rstest(input, output,
-        case(false, 0),
-        case(true, 1),
-    )]
+    #[rstest(input, output, case(false, 0), case(true, 1))]
     fn test_bool2bit(input: bool, output: Bit) {
         assert_eq!(bool2bit(input), output);
     }

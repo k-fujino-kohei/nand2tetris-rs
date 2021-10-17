@@ -1,4 +1,4 @@
-use super::{Bit, Bit16, and, mux, not, or, xor};
+use super::{and, mux, not, or, xor, Bit, Bit16};
 
 #[allow(dead_code)]
 pub fn not16(a: &Bit16) -> Bit16 {

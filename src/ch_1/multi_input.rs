@@ -1,4 +1,4 @@
-use super::{Bit, Bit16, Bit8, Bit3, Bit2, dmux, mux16, or};
+use super::{dmux, mux16, or, Bit, Bit16, Bit2, Bit3, Bit8};
 
 #[allow(dead_code)]
 pub fn or8way(a: &Bit8) -> Bit {
@@ -158,20 +158,6 @@ mod tests {
         case(0, [1, 1], (0, 0, 0, 0)),
     )]
     fn test_dmux4way(input: Bit, sel: Bit2, output: (Bit, Bit, Bit, Bit)) {
-        assert_eq!(dmux4way(input, &sel), output);
-    }
-
-    #[rstest(input, sel, output,
-        case(1, [0, 0], (1, 0, 0, 0)),
-        case(0, [0, 0], (0, 0, 0, 0)),
-        case(1, [0, 1], (0, 1, 0, 0)),
-        case(0, [0, 1], (0, 0, 0, 0)),
-        case(1, [1, 0], (0, 0, 1, 0)),
-        case(0, [1, 0], (0, 0, 0, 0)),
-        case(1, [1, 1], (0, 0, 0, 1)),
-        case(0, [1, 1], (0, 0, 0, 0)),
-    )]
-    fn test_dmux4way2(input: Bit, sel: Bit2, output: (Bit, Bit, Bit, Bit)) {
         assert_eq!(dmux4way(input, &sel), output);
     }
 

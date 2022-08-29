@@ -1,5 +1,6 @@
 use crate::ch_1::Bit;
 
+mod full_adder;
 mod harf_adder;
 
 #[derive(Debug, PartialEq, Eq)]

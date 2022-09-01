@@ -1,6 +1,7 @@
 use super::{harf_adder::harf_adder, AdderOutput};
 use crate::ch_1::{or, Bit};
 
+#[allow(dead_code)]
 pub fn full_adder(a: Bit, b: Bit, c: Bit) -> AdderOutput {
     let ab = harf_adder(a, b);
     let abc = harf_adder(ab.sum, c);

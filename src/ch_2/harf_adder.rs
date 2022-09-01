@@ -1,7 +1,7 @@
+use super::AdderOutput;
 use crate::ch_1::{and, xor, Bit};
 
-use super::AdderOutput;
-
+#[allow(dead_code)]
 pub fn harf_adder(a: Bit, b: Bit) -> AdderOutput {
     AdderOutput {
         carry: and(a, b),

@@ -15,7 +15,7 @@ pub fn mux4way16(a: &Bit16, b: &Bit16, c: &Bit16, d: &Bit16, sel: &Bit2) -> Bit1
     mux16(&ab, &cd, sel[0])
 }
 
-#[allow(dead_code)]
+#[allow(dead_code, clippy::too_many_arguments)]
 pub fn mux8way16(
     a: &Bit16,
     b: &Bit16,

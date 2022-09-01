@@ -3,6 +3,7 @@ use crate::ch_1::Bit;
 mod adder;
 mod full_adder;
 mod harf_adder;
+mod inc;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct AdderOutput {

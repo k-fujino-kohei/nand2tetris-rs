@@ -2,7 +2,7 @@ use super::full_adder::full_adder;
 use crate::ch_1::Bit16;
 
 #[allow(dead_code)]
-fn add16(a: Bit16, b: Bit16) -> Bit16 {
+pub fn add16(a: Bit16, b: Bit16) -> Bit16 {
     let r1 = full_adder(0, a[15], b[15]);
     let r2 = full_adder(r1.carry, a[14], b[14]);
     let r3 = full_adder(r2.carry, a[13], b[13]);

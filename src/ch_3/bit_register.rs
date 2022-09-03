@@ -1,7 +1,7 @@
 use super::dff::DFF;
 use crate::ch_1::{mux, Bit};
 
-struct BitRegister {
+pub struct BitRegister {
     dff: DFF,
 }
 

@@ -1,3 +1,6 @@
+#[macro_use]
+mod macros;
+
 mod ch_1;
 mod ch_2;
 

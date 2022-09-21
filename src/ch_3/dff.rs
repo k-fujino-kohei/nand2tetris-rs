@@ -1,5 +1,6 @@
 use crate::ch_1::Bit;
 
+#[allow(clippy::upper_case_acronyms)]
 pub struct DFF(Bit);
 
 impl DFF {

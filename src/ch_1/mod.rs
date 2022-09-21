@@ -9,6 +9,7 @@ pub use multi_input::*;
 pub type Bit = u8;
 pub type Bit2 = [Bit; 2];
 pub type Bit3 = [Bit; 3];
+pub type Bit6 = [Bit; 6];
 pub type Bit8 = [Bit; 8];
 pub type Bit16 = [Bit; 16];
 

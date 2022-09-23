@@ -14,6 +14,10 @@ impl BitRegister {
         let out = mux(self.dff.out(), input, load);
         self.dff.sync(out)
     }
+
+    pub fn out(&self) -> Bit {
+        self.dff.out()
+    }
 }
 
 #[cfg(test)]

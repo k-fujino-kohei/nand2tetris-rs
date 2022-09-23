@@ -6,6 +6,12 @@ mod full_adder;
 mod harf_adder;
 mod inc;
 
+pub use adder::*;
+pub use alu::*;
+pub use full_adder::*;
+pub use harf_adder::*;
+pub use inc::*;
+
 #[derive(Debug, PartialEq, Eq)]
 pub struct AdderOutput {
     pub carry: Bit,

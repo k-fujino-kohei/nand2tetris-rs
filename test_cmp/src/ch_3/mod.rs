@@ -1,5 +1,39 @@
 use crate::{de_bit16, de_bit3, de_bit6, read_cmp};
 
+pub mod bit {
+    use super::*;
+
+    #[derive(Deserialize)]
+    pub struct Record {
+        pub time: String,
+        pub r#in: u8,
+        pub load: u8,
+        pub out: u8,
+    }
+
+    pub fn cmp() -> Vec<Record> {
+        read_cmp::<Record>(include_str!("./Bit.cmp"))
+    }
+}
+
+pub mod register {
+    use super::*;
+
+    #[derive(Deserialize)]
+    pub struct Record {
+        pub time: String,
+        #[serde(deserialize_with = "de_bit16")]
+        pub r#in: [u8; 16],
+        pub load: u8,
+        #[serde(deserialize_with = "de_bit16")]
+        pub out: [u8; 16],
+    }
+
+    pub fn cmp() -> Vec<Record> {
+        read_cmp::<Record>(include_str!("./Register.cmp"))
+    }
+}
+
 pub mod ram8 {
     use super::*;
 

@@ -15,6 +15,7 @@ pub(crate) fn read_cmp<Record: DeserializeOwned>(cmp: &str) -> Vec<Record> {
         .deserialize::<Record>()
         .collect::<Result<Vec<_>, _>>()
         .unwrap();
+    debug_assert!(!records.is_empty());
     records
 }
 

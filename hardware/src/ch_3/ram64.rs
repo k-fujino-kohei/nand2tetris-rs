@@ -29,6 +29,21 @@ impl RAM64 {
             &[address[0], address[1], address[2]],
         )
     }
+
+    #[allow(dead_code)]
+    pub fn out(&self, address: Bit6) -> Bit16 {
+        mux8way16(
+            &(self.rams[0]).out([address[3], address[4], address[5]]),
+            &(self.rams[1]).out([address[3], address[4], address[5]]),
+            &(self.rams[2]).out([address[3], address[4], address[5]]),
+            &(self.rams[3]).out([address[3], address[4], address[5]]),
+            &(self.rams[4]).out([address[3], address[4], address[5]]),
+            &(self.rams[5]).out([address[3], address[4], address[5]]),
+            &(self.rams[6]).out([address[3], address[4], address[5]]),
+            &(self.rams[7]).out([address[3], address[4], address[5]]),
+            &[address[0], address[1], address[2]],
+        )
+    }
 }
 
 #[cfg(test)]
@@ -40,12 +55,12 @@ mod tests {
     fn test_ram8() {
         let mut ram64 = RAM64::new([[[0; 16]; 8]; 8]);
         for cmp in cmp() {
-            assert_eq!(
-                ram64.sync(cmp.r#in, cmp.address, cmp.load),
-                cmp.out,
-                "failed at time: {}",
-                cmp.time
-            );
+            let fact = if cmp.clock() {
+                ram64.sync(cmp.r#in, cmp.address, cmp.load)
+            } else {
+                ram64.out(cmp.address)
+            };
+            assert_eq!(fact, cmp.out, "failed at time: {}", cmp.time);
         }
     }
 }

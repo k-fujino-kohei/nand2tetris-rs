@@ -32,17 +32,17 @@ impl RAM8 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use test_cmp::ch_3::ram8::ram8_cmp;
+    use test_cmp::ch_3::ram8::*;
 
     #[test]
     fn test_ram8() {
         let mut ram8 = RAM8::new([[0; 16]; 8]);
-        for (time, input, load, address, out) in ram8_cmp() {
+        for cmp in cmp() {
             assert_eq!(
-                ram8.sync(input, address, load),
-                out,
+                ram8.sync(cmp.r#in, cmp.address, cmp.load),
+                cmp.out,
                 "failed at time: {}",
-                time
+                cmp.time
             );
         }
     }

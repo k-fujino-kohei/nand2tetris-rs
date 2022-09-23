@@ -1,2 +1,3 @@
-pub mod ram64;
-pub mod ram8;
+mod ram;
+
+pub use ram::*;

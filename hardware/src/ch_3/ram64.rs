@@ -34,17 +34,17 @@ impl RAM64 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use test_cmp::ch_3::ram64::ram64_cmp;
+    use test_cmp::ch_3::ram64::*;
 
     #[test]
     fn test_ram8() {
         let mut ram64 = RAM64::new([[[0; 16]; 8]; 8]);
-        for (time, input, load, address, out) in ram64_cmp() {
+        for cmp in cmp() {
             assert_eq!(
-                ram64.sync(input, address, load),
-                out,
+                ram64.sync(cmp.r#in, cmp.address, cmp.load),
+                cmp.out,
                 "failed at time: {}",
-                time
+                cmp.time
             );
         }
     }

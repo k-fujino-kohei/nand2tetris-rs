@@ -1,6 +1,6 @@
 use super::register::Register;
 use crate::{
-    ch_1::{mux16, mux4way16, Bit, Bit16},
+    ch_1::{mux16, Bit, Bit16},
     ch_2::inc16,
 };
 

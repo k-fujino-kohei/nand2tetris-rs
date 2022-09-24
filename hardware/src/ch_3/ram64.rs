@@ -1,6 +1,7 @@
 use super::ram8::RAM8;
 use crate::ch_1::{dmux8way, mux8way16, Bit, Bit16, Bit6};
 
+#[derive(Default)]
 #[allow(dead_code)]
 pub struct RAM64 {
     rams: [RAM8; 8],

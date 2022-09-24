@@ -1,6 +1,7 @@
 use super::bit_register::BitRegister;
 use crate::ch_1::{Bit, Bit16};
 
+#[derive(Default)]
 pub struct Register {
     bits: [BitRegister; 16],
 }

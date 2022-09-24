@@ -2,6 +2,7 @@ use crate::ch_1::{dmux8way, mux8way16, Bit, Bit16, Bit3};
 
 use super::register::Register;
 
+#[derive(Default)]
 pub struct RAM8 {
     registers: [Register; 8],
 }

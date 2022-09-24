@@ -38,6 +38,10 @@ fn bit6(num: impl std::fmt::Binary) -> [u8; 6] {
     let str = format!("{:>06b}", num);
     bit!(@6, str)
 }
+fn bit9(num: impl std::fmt::Binary) -> [u8; 9] {
+    let str = format!("{:>09b}", num);
+    bit!(@9, str)
+}
 fn bit16(num: impl std::fmt::Binary) -> [u8; 16] {
     let str = format!("{:>016b}", num);
     bit!(@16, str)
@@ -55,7 +59,12 @@ where
 {
     Ok(bit6(u8::deserialize(deserializer)?))
 }
-
+pub(crate) fn de_bit9<'de, D>(deserializer: D) -> Result<[u8; 9], D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(bit9(u16::deserialize(deserializer)?))
+}
 pub(crate) fn de_bit16<'de, D>(deserializer: D) -> Result<[u8; 16], D::Error>
 where
     D: Deserializer<'de>,

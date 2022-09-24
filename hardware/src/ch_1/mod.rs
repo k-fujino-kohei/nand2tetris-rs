@@ -13,6 +13,7 @@ pub type Bit6 = [Bit; 6];
 pub type Bit8 = [Bit; 8];
 pub type Bit9 = [Bit; 9];
 pub type Bit12 = [Bit; 12];
+pub type Bit14 = [Bit; 14];
 pub type Bit16 = [Bit; 16];
 
 /// the primitive gate

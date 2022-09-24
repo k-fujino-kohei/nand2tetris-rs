@@ -1,4 +1,4 @@
-use crate::{de_bit16, de_bit3, de_bit6, de_bit9, read_cmp};
+use crate::{de_bit12, de_bit16, de_bit3, de_bit6, de_bit9, read_cmp};
 
 macro_rules! impl_clock {
     ($record:ident) => {
@@ -111,6 +111,28 @@ pub mod ram512 {
 
     pub fn cmp() -> Vec<Record> {
         read_cmp::<Record>(include_str!("./RAM512.cmp"))
+    }
+}
+
+pub mod ram4k {
+    use super::*;
+
+    #[derive(Deserialize)]
+    pub struct Record {
+        pub time: String,
+        #[serde(deserialize_with = "de_bit16")]
+        pub r#in: [u8; 16],
+        pub load: u8,
+        #[serde(deserialize_with = "de_bit12")]
+        pub address: [u8; 12],
+        #[serde(deserialize_with = "de_bit16")]
+        pub out: [u8; 16],
+    }
+
+    impl_clock!(Record);
+
+    pub fn cmp() -> Vec<Record> {
+        read_cmp::<Record>(include_str!("./RAM4K.cmp"))
     }
 }
 

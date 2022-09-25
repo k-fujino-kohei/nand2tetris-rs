@@ -1,7 +1,18 @@
 #[macro_use]
 extern crate serde;
 
+macro_rules! impl_clock {
+    ($record:ident) => {
+        impl $record {
+            pub fn clock(&self) -> bool {
+                self.time.contains('+')
+            }
+        }
+    };
+}
+
 pub mod ch_3;
+pub mod ch_5;
 
 use csv::{ReaderBuilder, Trim};
 use serde::{de::DeserializeOwned, Deserialize, Deserializer};
@@ -50,6 +61,10 @@ fn bit14(num: impl std::fmt::Binary) -> [u8; 14] {
     let str = format!("{:>014b}", num);
     bit!(@14, str)
 }
+fn bit15(num: impl std::fmt::Binary) -> [u8; 15] {
+    let str = format!("{:>015b}", num);
+    bit!(@15, str)
+}
 fn bit16(num: impl std::fmt::Binary) -> [u8; 16] {
     let str = format!("{:>016b}", num);
     bit!(@16, str)
@@ -85,9 +100,27 @@ where
 {
     Ok(bit14(i16::deserialize(deserializer)?))
 }
+pub(crate) fn de_bit15<'de, D>(deserializer: D) -> Result<[u8; 15], D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(bit15(i16::deserialize(deserializer)?))
+}
 pub(crate) fn de_bit16<'de, D>(deserializer: D) -> Result<[u8; 16], D::Error>
 where
     D: Deserializer<'de>,
 {
     Ok(bit16(i16::deserialize(deserializer)?))
+}
+pub(crate) fn de_opt_bit16<'de, D>(deserializer: D) -> Result<Option<[u8; 16]>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(i16::deserialize(deserializer).ok().map(bit16))
+}
+pub(crate) fn de_raw_bit16<'de, D>(deserializer: D) -> Result<[u8; 16], D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(bit!(@16, String::deserialize(deserializer)?))
 }

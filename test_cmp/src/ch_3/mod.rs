@@ -1,15 +1,5 @@
 use crate::{de_bit12, de_bit14, de_bit16, de_bit3, de_bit6, de_bit9, read_cmp};
 
-macro_rules! impl_clock {
-    ($record:ident) => {
-        impl $record {
-            pub fn clock(&self) -> bool {
-                self.time.contains('+')
-            }
-        }
-    };
-}
-
 pub mod bit {
     use super::*;
 

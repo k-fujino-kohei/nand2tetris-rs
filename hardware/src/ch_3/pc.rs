@@ -4,6 +4,7 @@ use crate::{
     ch_2::inc16,
 };
 
+#[derive(Default)]
 #[allow(dead_code)]
 pub struct Pc {
     register: Register,

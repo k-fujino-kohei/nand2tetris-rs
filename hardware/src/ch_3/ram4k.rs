@@ -8,6 +8,13 @@ pub struct RAM4K {
 
 impl RAM4K {
     #[allow(dead_code)]
+    pub fn new(v: [[[[Bit16; 8]; 8]; 8]; 8]) -> Self {
+        Self {
+            rams: v.map(RAM512::new),
+        }
+    }
+
+    #[allow(dead_code)]
     pub fn sync(&mut self, input: Bit16, address: Bit12, load: Bit) -> Bit16 {
         let higher = [address[0], address[1], address[2]];
         let lower = [

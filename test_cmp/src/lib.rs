@@ -106,6 +106,12 @@ where
 {
     Ok(bit15(i16::deserialize(deserializer)?))
 }
+pub(crate) fn de_raw_bit15<'de, D>(deserializer: D) -> Result<[u8; 15], D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(bit!(@15, String::deserialize(deserializer)?))
+}
 pub(crate) fn de_bit16<'de, D>(deserializer: D) -> Result<[u8; 16], D::Error>
 where
     D: Deserializer<'de>,

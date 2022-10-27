@@ -1,4 +1,4 @@
-use crate::{de_bit15, de_bit16, de_opt_bit16, de_raw_bit16, read_cmp};
+use crate::{de_bit15, de_bit16, de_opt_bit16, de_raw_bit15, de_raw_bit16, read_cmp};
 
 pub mod cpu {
     use super::*;
@@ -28,5 +28,24 @@ pub mod cpu {
 
     pub fn cmp() -> Vec<Record> {
         read_cmp::<Record>(include_str!("./CPU.cmp"))
+    }
+}
+
+pub mod memory {
+    use super::*;
+
+    #[derive(Deserialize)]
+    pub struct Record {
+        #[serde(deserialize_with = "de_bit16")]
+        pub r#in: [u8; 16],
+        pub load: u8,
+        #[serde(deserialize_with = "de_raw_bit15")]
+        pub address: [u8; 15],
+        #[serde(deserialize_with = "de_bit16")]
+        pub out: [u8; 16],
+    }
+
+    pub fn cmp() -> Vec<Record> {
+        read_cmp::<Record>(include_str!("./Memory.cmp"))
     }
 }

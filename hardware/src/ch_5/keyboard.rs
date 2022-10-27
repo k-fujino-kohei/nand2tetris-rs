@@ -1,17 +1,29 @@
 use crate::ch_1::Bit16;
 
 #[allow(dead_code)]
-struct Keyboard;
+#[derive(Default)]
+pub struct Keyboard {
+    data: Bit16,
+}
 
 impl Keyboard {
+    pub fn new() -> Self {
+        Self { data: [0; 16] }
+    }
+
+    pub fn out(&self) -> Bit16 {
+        self.data
+    }
+
     #[allow(dead_code)]
-    pub fn input(key: &str) -> Bit16 {
+    pub fn input(&mut self, key: &str) -> Bit16 {
         let key = format!("{:>016b}", Keyboard::keymap(key));
 
         let mut r: Bit16 = [0; 16];
         key.chars()
             .enumerate()
             .for_each(|(i, b)| r[i] = b.to_string().parse::<u8>().unwrap());
+        self.data = r;
         r
     }
 

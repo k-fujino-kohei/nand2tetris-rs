@@ -24,7 +24,7 @@ macro_rules! format_bit {
 /// `[u8; 16]` to `i16`
 macro_rules! i16_from_bit16 {
     ($bin:expr) => {
-        i16::from_str_radix(&format_bit!($bin), 2).unwrap()
+        i32::from_str_radix(&format_bit!($bin), 2).unwrap()
     };
 }
 

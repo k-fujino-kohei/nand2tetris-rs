@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use crate::{
     ch_1::{and, mux16, not, or, Bit, Bit15, Bit16, Bit2, Bit3, Bit6},
     ch_2::{alu, ALUOutput},
@@ -34,26 +36,28 @@ impl CPU {
     pub fn out(&self, in_m: Bit16, instruction_raw: Bit16, _reset: Bit) -> CPUOutput {
         let instruction = self.decode(instruction_raw);
         let (i, ddd) = (instruction.i, instruction.ddd);
-        let address_m = {
-            let a = self.a_register.out();
-            [
-                a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12], a[13],
-                a[14], a[15],
-            ]
-        };
-        let pc = {
-            let pc = self.pc.out();
-            [
-                pc[1], pc[2], pc[3], pc[4], pc[5], pc[6], pc[7], pc[8], pc[9], pc[10], pc[11],
-                pc[12], pc[13], pc[14], pc[15],
-            ]
-        };
         CPUOutput {
             out_m: self.alu(in_m, instruction).out,
             write_m: and(i, ddd[2]),
-            address_m,
-            pc,
+            address_m: self.address_m(),
+            pc: self.pc(),
         }
+    }
+
+    pub fn address_m(&self) -> Bit15 {
+        let a = self.a_register.out();
+        [
+            a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12], a[13],
+            a[14], a[15],
+        ]
+    }
+
+    pub fn pc(&self) -> Bit15 {
+        let pc = self.pc.out();
+        [
+            pc[1], pc[2], pc[3], pc[4], pc[5], pc[6], pc[7], pc[8], pc[9], pc[10], pc[11], pc[12],
+            pc[13], pc[14], pc[15],
+        ]
     }
 
     #[allow(dead_code)]
@@ -112,6 +116,28 @@ impl CPU {
             ddd,
             jjj,
         }
+    }
+}
+
+impl Debug for CPU {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let a = self.a_register.out();
+        let a_str = format_bit!(a);
+        let a_num = i16_from_bit16!(a);
+        let d = self.d_register.out();
+        let d_str = format_bit!(d);
+        let d_num = i16_from_bit16!(d);
+        let p = self.pc.out();
+        let p_str = format_bit!(p);
+        let p_num = i16_from_bit16!(p);
+        write!(
+            f,
+            r#"
+CPU --
+    A  | {a_str} | {a_num}
+    D  | {d_str} | {d_num}
+    PC | {p_str} | {p_num}"#
+        )
     }
 }
 

@@ -62,4 +62,8 @@ impl Computer {
             println!(r#"RAM[{address}] {ram_str} : {ram_num}"#)
         }
     }
+
+    pub fn ram(&self, address: Bit14) -> Bit16 {
+        self.memory.ram_out(address)
+    }
 }

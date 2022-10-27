@@ -12,6 +12,10 @@ pub fn main() {
     computer.run(0, 14);
     // expect RAM[2] == 5
     computer.dbg_print_ram_out(bit!(14, "00000000000010"));
+    assert_eq!(
+        computer.ram(bit!(14, "00000000000010")),
+        bit!(16, "0000000000000101")
+    );
 
     // reset
     computer.run(1, 1);
@@ -23,4 +27,13 @@ pub fn main() {
     computer.run(0, 10);
     // expect RAM[2] == 23456
     computer.dbg_print_ram_out(bit!(14, "00000000000010"));
+    assert_eq!(
+        computer.ram(bit!(14, "00000000000010")),
+        bit!(16, "0101101110100000")
+    );
+}
+
+#[test]
+fn test_max() {
+    main()
 }

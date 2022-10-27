@@ -9,9 +9,18 @@ pub struct RAM512 {
 
 impl RAM512 {
     #[allow(dead_code)]
-    pub fn new(v: [[[Bit16; 8]; 8]; 8]) -> Self {
+    pub fn new() -> Self {
         Self {
-            rams: v.map(RAM64::new),
+            rams: [
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+                RAM64::default(),
+            ],
         }
     }
 
@@ -62,7 +71,7 @@ mod tests {
 
     #[test]
     fn test_ram512() {
-        let mut ram512 = RAM512::new([[[[0; 16]; 8]; 8]; 8]);
+        let mut ram512 = RAM512::new();
         for cmp in cmp() {
             let fact = if cmp.clock() {
                 ram512.sync(cmp.r#in, cmp.address, cmp.load)

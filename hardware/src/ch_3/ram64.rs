@@ -9,9 +9,18 @@ pub struct RAM64 {
 
 impl RAM64 {
     #[allow(dead_code)]
-    pub fn new(v: [[Bit16; 8]; 8]) -> Self {
+    pub fn new() -> Self {
         Self {
-            rams: v.map(RAM8::new),
+            rams: [
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+                RAM8::default(),
+            ],
         }
     }
 
@@ -54,7 +63,7 @@ mod tests {
 
     #[test]
     fn test_ram8() {
-        let mut ram64 = RAM64::new([[[0; 16]; 8]; 8]);
+        let mut ram64 = RAM64::new();
         for cmp in cmp() {
             let fact = if cmp.clock() {
                 ram64.sync(cmp.r#in, cmp.address, cmp.load)

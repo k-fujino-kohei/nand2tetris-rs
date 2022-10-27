@@ -8,9 +8,18 @@ pub struct RAM4K {
 
 impl RAM4K {
     #[allow(dead_code)]
-    pub fn new(v: [[[[Bit16; 8]; 8]; 8]; 8]) -> Self {
+    pub fn new() -> Self {
         Self {
-            rams: v.map(RAM512::new),
+            rams: [
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+                RAM512::default(),
+            ],
         }
     }
 

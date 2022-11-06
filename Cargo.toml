@@ -1,2 +1,2 @@
 [workspace]
-members = ["hardware", "test_cmp"]
+members = ["assembler", "hardware", "test_cmp"]

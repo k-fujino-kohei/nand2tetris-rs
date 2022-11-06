@@ -317,7 +317,7 @@ impl<'a> Lexer<'a> {
     }
 
     fn peek_char(&mut self) -> Option<char> {
-        self.asm.get(self.position + 1).copied().map(char::from)
+        self.asm.get(self.position).copied().map(char::from)
     }
 }
 

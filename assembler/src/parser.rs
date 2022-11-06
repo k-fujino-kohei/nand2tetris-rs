@@ -19,6 +19,12 @@ pub struct CCommand {
     pub jump: Option<String>,
 }
 
+impl CCommand {
+    pub fn a(&self) -> bool {
+        self.comp.contains('M')
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LCommand {
     pub symbol: String,

@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read, path::Path};
+use std::{fs::File, io::Read, iter::Peekable, path::Path};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CommandType {
@@ -98,8 +98,8 @@ impl Parser {
         let mut commands = vec![];
         for line in tokens.split(|(token, _)| token == &Token::Lf) {
             let mut line = line.iter().peekable();
-            let lead_token = if let Some(l) = line.next() {
-                l
+            let (lead_token, lead_value) = if let Some(l) = line.next() {
+                (l.0.to_owned(), l.1.to_owned())
             } else {
                 continue;
             };
@@ -112,7 +112,7 @@ impl Parser {
 
             // A Command = A1
             // A1 = @value
-            if Token::At == lead_token.0 {
+            if Token::At == lead_token {
                 let value = read_next(&mut line);
                 commands.push(CommandType::ACommand(ACommand {
                     value: value.1.to_string(),
@@ -120,26 +120,95 @@ impl Parser {
                 continue;
             }
 
-            if Token::Ident == lead_token.0 {
+            if Token::Ident == lead_token {
                 // C Command = C1 | C2 | C3
                 // C1 = dest=comp;jump
                 // C2 = dest=comp
                 // C3 = comp;jump
-                let c_command = {
-                    let dest = if let Some((Token::Eq, _)) = line.peek() {
+                enum CStatement {
+                    C1 {
+                        dest: String,
+                        comp: String,
+                        jump: String,
+                    },
+                    C2 {
+                        dest: String,
+                        comp: String,
+                    },
+                    C3 {
+                        comp: String,
+                        jump: String,
+                    },
+                }
+                fn find_c_statement<'a>(
+                    lead_value: String,
+                    line: &mut Peekable<impl Iterator<Item = &'a (Token, String)>>,
+                ) -> Option<CStatement> {
+                    let mut c1 = [Token::Eq, Token::Ident, Token::SemiColon, Token::Ident].iter();
+                    let mut c2 = [Token::Eq, Token::Ident].iter();
+                    let mut c3 = [Token::SemiColon, Token::Ident].iter();
+                    let mut flags = [true; 3];
+                    let mut line2 = vec![];
+                    for e in line {
+                        line2.push(e.to_owned());
+                        let (token, _value) = e;
+                        flags[0] = flags[0] && c1.next() == Some(token);
+                        flags[1] = flags[1] && c2.next() == Some(token);
+                        flags[2] = flags[2] && c3.next() == Some(token);
+                    }
+                    flags = [
+                        flags[0] && c1.count() == 0,
+                        flags[1] && c2.count() == 0,
+                        flags[2] && c3.count() == 0,
+                    ];
+                    let mut line = line2.iter();
+                    if flags[0] {
                         let _eq = read_next(&mut line);
-                        Some(lead_token.1.to_owned())
-                    } else {
-                        None
-                    };
-                    let comp = read_next(&mut line).1;
-                    let jump = if let Some((Token::SemiColon, _)) = line.peek() {
+                        let comp = read_next(&mut line).1;
                         let _semicolon = read_next(&mut line);
-                        Some(read_next(&mut line).1)
-                    } else {
-                        None
-                    };
-                    CCommand { dest, comp, jump }
+                        let jump = read_next(&mut line).1;
+                        return Some(CStatement::C1 {
+                            dest: lead_value,
+                            comp,
+                            jump,
+                        });
+                    }
+                    if flags[1] {
+                        let _eq = read_next(&mut line);
+                        let comp = read_next(&mut line).1;
+                        return Some(CStatement::C2 {
+                            dest: lead_value,
+                            comp,
+                        });
+                    }
+                    if flags[2] {
+                        let _semicolon = read_next(&mut line);
+                        let jump = read_next(&mut line).1;
+                        return Some(CStatement::C3 {
+                            comp: lead_value,
+                            jump,
+                        });
+                    }
+                    None
+                }
+                let c_command = {
+                    match find_c_statement(lead_value, &mut line).expect("unexpected statement") {
+                        CStatement::C1 { dest, comp, jump } => CCommand {
+                            dest: Some(dest),
+                            comp,
+                            jump: Some(jump),
+                        },
+                        CStatement::C2 { dest, comp } => CCommand {
+                            dest: Some(dest),
+                            comp,
+                            jump: None,
+                        },
+                        CStatement::C3 { comp, jump } => CCommand {
+                            dest: None,
+                            comp,
+                            jump: Some(jump),
+                        },
+                    }
                 };
                 commands.push(CommandType::CCommand(c_command));
             }

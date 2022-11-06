@@ -26,8 +26,8 @@ fn test_parse() {
         }),
         CommandType::CCommand(CCommand {
             dest: None,
-            comp: String::from(""),
-            jump: None,
+            comp: String::from("D"),
+            jump: Some(String::from("JGT")),
         }),
         CommandType::ACommand(ACommand {
             value: String::from("1"),
@@ -42,8 +42,8 @@ fn test_parse() {
         }),
         CommandType::CCommand(CCommand {
             dest: None,
-            comp: String::from(""),
-            jump: None,
+            comp: String::from("0"),
+            jump: Some(String::from("JMP")),
         }),
         CommandType::ACommand(ACommand {
             value: String::from("0"),
@@ -66,8 +66,8 @@ fn test_parse() {
         }),
         CommandType::CCommand(CCommand {
             dest: None,
-            comp: String::from(""),
-            jump: None,
+            comp: String::from("0"),
+            jump: Some(String::from("JMP")),
         }),
     ];
     for (i, command) in parser.enumerate() {
